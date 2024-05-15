@@ -321,7 +321,7 @@ export class PgCommon {
     value ??= {} as T;
     for (const property in defaultValue) {
       const result = defaultValue[property] as AllPartial<T[keyof T]>;
-      value[property as keyof T] ??= result as T[keyof T];
+      value[property as unknown as keyof T] ??= result as T[keyof T];
     }
 
     return value as NonNullable<T & D>;

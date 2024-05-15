@@ -1,9 +1,6 @@
 import { FC } from "react";
 import { useSearchParams } from "react-router-dom";
-import styled, { css } from "styled-components";
-
-import Checkbox from "../Checkbox";
-import Tag from "../Tag";
+import styled from "styled-components";
 
 interface FilterGroupProps {
   param: string;
@@ -14,62 +11,60 @@ const FilterGroup: FC<FilterGroupProps> = ({ param, filters }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValues = searchParams.getAll(param);
 
+  const handleFilterClick = (filter: string) => {
+    if (searchValues.includes(filter)) {
+      const otherValues = searchValues.filter((f) => f !== filter);
+      searchParams.delete(param);
+      for (const otherValue of otherValues) {
+        searchParams.append(param, otherValue);
+      }
+    } else {
+      searchParams.append(param, filter);
+    }
+
+    setSearchParams(searchParams, { replace: true });
+  };
+
   return (
     <FilterGroupWrapper>
-      <FilterGroupTitle>{param}</FilterGroupTitle>
-      {filters.filter(Boolean).map((filter) => (
-        <Checkbox
-          key={filter}
-          label={<FilterLabel kind={param} value={filter} />}
-          checked={searchValues.includes(filter)}
-          onChange={(ev) => {
-            if (ev.target.checked) {
-              searchParams.append(param, filter);
-            } else {
-              const otherValues = searchValues.filter((f) => f !== filter);
-              searchParams.delete(param);
-              for (const otherValue of otherValues) {
-                searchParams.append(param, otherValue);
-              }
-            }
-
-            setSearchParams(searchParams, { replace: true });
-          }}
-        />
-      ))}
+      <FiltersContainer>
+        {filters.filter(Boolean).map((filter) => (
+          <FilterButton
+            key={filter}
+            selected={searchValues.includes(filter)}
+            onClick={() => handleFilterClick(filter)}
+          >
+            {filter}
+          </FilterButton>
+        ))}
+      </FiltersContainer>
     </FilterGroupWrapper>
   );
 };
 
 const FilterGroupWrapper = styled.div`
-  padding: 1rem;
+  padding: 0.25rem;
+`;
 
-  & label {
-    margin: 0.5rem 0;
-    padding: 0.25rem;
+const FiltersContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 100px;
+`;
+
+const FilterButton = styled.button<{ selected: boolean }>`
+  padding: 0.5rem 1rem;
+  border: 2px solid #ccc;
+  background-color: ${({ selected }) => (selected ? "#fff" : "#222222")};
+  color: ${({ selected }) => (selected ? "#000" : "#FFF")};
+  border-radius: 1000px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${({ selected }) => (selected ? "#fff" : "#f0f0f0")};
+    color: #000;
   }
-`;
-
-const FilterGroupTitle = styled.div`
-  ${({ theme }) => css`
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    font-size: ${theme.font.other.size.small};
-  `}
-`;
-
-const FilterLabel = styled(Tag)`
-  ${({ kind }) => {
-    // Reset the default box styles except `level`
-    if (kind !== "level") {
-      return css`
-        padding: 0 0.25rem;
-        background: none !important;
-        box-shadow: none;
-      `;
-    }
-  }}
 `;
 
 export default FilterGroup;

@@ -1,10 +1,10 @@
 import { FC } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 import Button from "../../../components/Button";
 import Img from "../../../components/Img";
 import TutorialDetails from "../../../components/Tutorial/TutorialDetails";
-import { PgTheme, PgTutorial, TutorialData } from "../../../utils/pg";
+import { PgTutorial, TutorialData } from "../../../utils/pg";
 
 interface FeaturedTutorialProps {
   tutorial: TutorialData;
@@ -20,7 +20,7 @@ const FeaturedTutorial: FC<FeaturedTutorialProps> = ({ tutorial }) => (
       <RightTopWrapper>
         <Name>{tutorial.name}</Name>
         <Description>{tutorial.description}</Description>
-
+        <div>Featured</div>
         <TutorialDetails
           details={[
             { kind: "level", data: tutorial.level },
@@ -45,14 +45,17 @@ const FeaturedTutorial: FC<FeaturedTutorialProps> = ({ tutorial }) => (
 );
 
 const Wrapper = styled.div`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(
-      theme.components.main.views.tutorials.main.tutorials.featured
-    )};
-  `}
+  height: 20rem;
+  display: flex;
+  border: 1px solid ${({ theme }) => theme.colors.default.border};
+  border-radius: ${({ theme }) => theme.default.borderRadius};
+  box-shadow: ${({ theme }) => theme.default.boxShadow};
+  overflow: hidden;
 `;
 
-const LeftWrapper = styled.div``;
+const LeftWrapper = styled.div`
+  width: 40%;
+`;
 
 const Thumbnail = styled(Img)`
   width: 100%;
@@ -79,9 +82,7 @@ const RightTopWrapper = styled.div`
 const Name = styled.h1``;
 
 const Description = styled.div`
-  ${({ theme }) => css`
-    color: ${theme.colors.default.textSecondary};
-  `}
+  color: ${({ theme }) => theme.colors.default.textSecondary};
 `;
 
 const RightBottomWrapper = styled.div`

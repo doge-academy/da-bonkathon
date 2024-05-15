@@ -44,11 +44,12 @@ const Level = styled.span<{ children: TutorialLevel }>`
         ? "info"
         : "error";
     return css`
-      padding: 0.25rem 0.5rem;
-      background: ${theme.colors.state[state].bg};
+      padding: 0.25rem 0.7rem;
+      background: #272727;
       color: ${theme.colors.state[state].color} !important;
-      border-radius: ${theme.default.borderRadius};
-      font-size: ${theme.font.other.size.xsmall};
+      border-radius: 1000px;
+
+      font-size: 12px;
       font-weight: bold;
       text-transform: uppercase;
     `;
@@ -57,19 +58,15 @@ const Level = styled.span<{ children: TutorialLevel }>`
 
 const Boxed = styled.div`
   ${({ theme }) => css`
-    padding: 0.5rem 0.75rem;
+    
     width: fit-content;
     display: flex;
     align-items: center;
     color: ${theme.colors.default.textSecondary};
-    border-radius: ${theme.default.borderRadius};
+    border-radius: 100%;
     box-shadow: ${theme.default.boxShadow};
     font-size: ${theme.font.other.size.small};
     font-weight: bold;
-
-    & *:first-child {
-      margin-right: 0.5rem;
-    }
   `}
 `;
 
@@ -84,16 +81,16 @@ const Framework: FC<FrameworkProps> = ({ value, ...props }) => {
   return (
     <Boxed ref={ref} {...props}>
       <FrameworkImage src={framework.icon} $circle={framework.circleImage} />
-      {value}
+      
     </Boxed>
   );
 };
 
 const FrameworkImage = styled(Img)<{ $circle?: boolean }>`
   ${({ $circle }) => css`
-    width: 1rem;
-    height: 1rem;
-    ${$circle && "border-radius: 50%"};
+    width: 2rem;
+    height: 2rem;
+    ${$circle && "border-radius: 100%"};
   `}
 `;
 

@@ -1290,8 +1290,9 @@ export class PgTheme {
     sidebar.left ??= {};
     // Left default
     sidebar.left.default ??= {};
-    sidebar.left.default.width ??= "3rem";
-    sidebar.left.default.bg ??= theme.colors.default.bgPrimary;
+    sidebar.left.default.width ??= "4.5rem";
+    sidebar.left.default.padding ??= "1rem";
+    sidebar.left.default.bg ??= "#1B1B1B";
     sidebar.left.default.borderRight ??= `1px solid ${theme.colors.default.border}`;
 
     // Left icon button
@@ -1321,6 +1322,7 @@ export class PgTheme {
     sidebar.right.default.borderRight ??= `1px solid ${theme.colors.default.border}`;
     // Right title
     sidebar.right.title ??= {};
+    sidebar.right.title.padding ??= '0.6rem';
     sidebar.right.title.borderBottom ??= `1px solid ${theme.colors.default.border};`;
     sidebar.right.title.color ??= theme.colors.default.textSecondary;
     sidebar.right.title.fontSize ??= theme.font.code.size.large;
@@ -1696,15 +1698,14 @@ export class PgTheme {
     card.default.width ??= "100%";
     card.default.height ??= "100%";
     card.default.overflow ??= "hidden";
-    card.default.bg ??= theme.components.main.views.tutorials.main.default.bg;
+    
     card.default.color ??= theme.colors.default.textPrimary;
     card.default.border ??= `1px solid ${
       theme.colors.default.border + theme.default.transparency.medium
     }`;
     card.default.borderRadius ??= theme.default.borderRadius;
-    card.default.boxShadow ??= theme.default.boxShadow;
-    card.default.transition ??= `all ${theme.default.transition.duration.medium}
-      ${theme.default.transition.type}`;
+    
+    
     //Main tutorials card gradient
     card.gradient ??= {};
     // Main tutorials featured tutorial

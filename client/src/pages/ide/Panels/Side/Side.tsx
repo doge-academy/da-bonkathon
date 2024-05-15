@@ -20,8 +20,9 @@ const Side = () => {
     );
   }, [sidebarPage]);
 
-  const [width, setWidth] = useState(320);
-  const [oldWidth, setOldWidth] = useState(width);
+  const [width, setWidth] = useState(0); // Start with the sidebar closed
+  const [oldWidth, setOldWidth] = useState(320); // Default sidebar width
+
   useEffect(() => {
     if (width) setOldWidth(width);
   }, [width]);

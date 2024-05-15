@@ -18,7 +18,7 @@ export type OnDidChangeDefault<T> = {
 
 /** Non-recursive `onDidChange${propertyName}` method types */
 export type OnDidChangeProperty<T> = {
-  [K in keyof T as `${typeof ON_DID_CHANGE}${Capitalize<K>}`]: (
+  [K in keyof T as `${typeof ON_DID_CHANGE}${Capitalize<string & K>}`]: (
     cb: (value: T[K]) => void
   ) => Disposable;
 };

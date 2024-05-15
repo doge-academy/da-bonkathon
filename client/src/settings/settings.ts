@@ -8,11 +8,9 @@ import { preflightChecks } from "./preflight-checks";
 import { priorityFee } from "./priority-fee";
 import { showTransactionDetails } from "./show-transaction-details";
 import { showTransactionNotifications } from "./show-transaction-notifications";
-import { theme } from "./theme";
 
 /** All configurable settings */
 export const SETTINGS = [
-  theme,
   font,
   endpoint,
   commitment,

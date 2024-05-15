@@ -77,7 +77,8 @@ const Terminal = () => {
   }, [term]);
 
   // Resize
-  const [height, setHeight] = useState(PgTerminal.DEFAULT_HEIGHT);
+  const [height, setHeight] = useState(0); // Start with the terminal closed
+  const [isClosed, setIsClosed] = useState(true); // Track if the terminal is closed
 
   const termRef = useRef<HTMLDivElement>(null);
 
@@ -117,8 +118,6 @@ const Terminal = () => {
     });
   }, []);
 
-  const [isClosed, setIsClosed] = useState(false);
-
   const toggleClose = useCallback(() => {
     setIsClosed((c) => !c);
     setHeight((h) => {
@@ -143,8 +142,9 @@ const Terminal = () => {
             toggleClose();
             PgEditor.focus();
           } else {
-            if (!height) toggleClose(); // Minimized
-
+            if (isClosed) {
+              toggleClose(); // Open the terminal if it is closed
+            }
             term.focus();
           }
         },
@@ -162,7 +162,7 @@ const Terminal = () => {
         },
       },
     ],
-    [term, height, clear, toggleClose, toggleMaximize]
+    [term, height, clear, toggleClose, toggleMaximize, isClosed]
   );
 
   return (

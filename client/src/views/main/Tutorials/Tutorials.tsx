@@ -1,5 +1,4 @@
-import styled, { css } from "styled-components";
-
+import styled from "styled-components";
 import FeaturedTutorial from "./FeaturedTutorial";
 import TutorialCard from "./TutorialCard";
 import FilterGroup from "../../../components/FilterGroup";
@@ -10,7 +9,7 @@ import { FILTERS, sortByLevel } from "./filters";
 import { Sad } from "../../../components/Icons";
 import { useFilteredSearch } from "../../../hooks";
 import { GITHUB_URL } from "../../../constants";
-import { PgTheme, PgTutorial } from "../../../utils/pg";
+import { PgTutorial } from "../../../utils/pg";
 
 /**
  * Tutorial items sorted by date.
@@ -39,7 +38,6 @@ export const Tutorials = () => {
     <Wrapper>
       <InnerWrapper>
         <TopSection>
-          <Title>Learn</Title>
           <SearchBar
             {...searchBarProps}
             placeholder="Search tutorials"
@@ -48,13 +46,12 @@ export const Tutorials = () => {
         </TopSection>
 
         <MainSection>
-          <FiltersWrapper>
-            {FILTERS.map((f) => (
-              <FilterGroup key={f.param} {...f} />
-            ))}
-          </FiltersWrapper>
-
           <TutorialsWrapper>
+            <FiltersWrapper>
+              {FILTERS.map((f) => (
+                <FilterGroup key={f.param} {...f} />
+              ))}
+            </FiltersWrapper>
             {!featuredItems.length && !regularItems.length && <NoMatch />}
 
             {featuredItems.length > 0 && (
@@ -82,9 +79,10 @@ export const Tutorials = () => {
 };
 
 const Wrapper = styled.div`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.main.views.tutorials.default)};
-  `}
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 `;
 
 const InnerWrapper = styled.div`
@@ -92,46 +90,64 @@ const InnerWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 2rem 2.5rem;
 `;
 
 const TopSection = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
+  padding-top: 10rem;
+  padding-bottom: 2rem;
+  background-image: url('/group 30.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   /** Search bar */
   & > div {
-    width: max(12rem, 50%);
+    width: max(10rem, 30%);
   }
 `;
 
-const Title = styled.h1``;
-
 const MainSection = styled.div`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.main.views.tutorials.main.default)};
-  `}
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  background: ${({ theme }) => theme.components.main.default.bg};
+  border-radius: ${({ theme }) => theme.default.borderRadius};
 `;
 
 const FiltersWrapper = styled.div`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.main.views.tutorials.main.filters)};
-  `}
+  display: flex;
+  max-width: 1500px;
+  flex-wrap: wrap;
+  padding-left: 1.5rem;
+  border-top-left-radius: ${({ theme }) => theme.default.borderRadius};
+  border-top-right-radius: ${({ theme }) => theme.default.borderRadius};
+  background: ${({ theme }) => theme.components.main.default.bg};
 `;
 
 const TutorialsWrapper = styled.div`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(
-      theme.components.main.views.tutorials.main.tutorials.default
-    )};
-  `}
+  flex: 1;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: ${({ theme }) => theme.components.main.default.bg};
+  border-bottom-left-radius: ${({ theme }) => theme.default.borderRadius};
+  border-bottom-right-radius: ${({ theme }) => theme.default.borderRadius};
 `;
 
 const RegularTutorialsWrapper = styled.div`
   display: flex;
+  margin-left: auto;
+  margin-right: auto;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.9rem;
 `;
 
 const NoMatch = () => (
@@ -148,11 +164,9 @@ const NoMatchWrapper = styled.div`
 `;
 
 const NoMatchText = styled(Text)`
-  ${({ theme }) => css`
-    width: 21rem;
-    height: 5rem;
-    font-size: ${theme.font.other.size.small};
-  `}
+  width: 21rem;
+  height: 5rem;
+  font-size: ${({ theme }) => theme.font.other.size.small};
 `;
 
 const BottomSection = styled.div`
@@ -163,3 +177,5 @@ const BottomSection = styled.div`
   min-height: 5rem;
   max-height: 5rem;
 `;
+
+export default Tutorials;

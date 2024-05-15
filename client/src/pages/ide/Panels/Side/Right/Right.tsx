@@ -60,7 +60,7 @@ const Right: FC<RightProps> = ({ sidebarPage, width, setWidth }) => {
 };
 
 const Title: FC<DefaultRightProps> = ({ sidebarPage }) => (
-  <TitleWrapper>{sidebarPage.toUpperCase()}</TitleWrapper>
+  <TitleWrapper>{sidebarPage}</TitleWrapper>
 );
 
 const Content: FC<DefaultRightProps> = ({ sidebarPage }) => {

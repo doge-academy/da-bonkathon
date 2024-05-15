@@ -21,7 +21,7 @@ type Update<T> = {
 
 /** Recursive `onDidChange${propertyName}` method types */
 type OnDidChangePropertyRecursive<T, U = FlattenObject<T>> = {
-  [K in keyof U as `${typeof ON_DID_CHANGE}${Capitalize<K>}`]: (
+  [K in keyof U as `${typeof ON_DID_CHANGE}${Capitalize<string & K>}`]: (
     cb: (value: U[K]) => void
   ) => Disposable;
 };
@@ -62,7 +62,7 @@ export function updatable<T>(params: {
     addInit(sClass, async () => {
       const state: T = await params.storage.read();
 
-      // Set the default if any prop is missing(recursively)
+      // Set the default if any prop is missing (recursively)
       const setMissingDefaults = (state: any, defaultState: any) => {
         if (Array.isArray(state)) return;
 
@@ -79,7 +79,7 @@ export function updatable<T>(params: {
       };
       setMissingDefaults(state, params.defaultState);
 
-      // Remove extra properties if a prop was removed(recursively)
+      // Remove extra properties if a prop was removed (recursively)
       const removeExtraProperties = (state: any, defaultState: any) => {
         if (Array.isArray(state)) return;
 
@@ -106,7 +106,7 @@ export function updatable<T>(params: {
     if (params.recursive) {
       (sClass as Update<T>).update = (updateParams: Partial<T>) => {
         for (const prop in updateParams) {
-          update(prop, updateParams[prop]);
+          update(prop as keyof T, updateParams[prop] as T[keyof T]);
 
           if (typeof sClass[prop] === "object" && sClass[prop] !== null) {
             sClass[prop] = defineSettersRecursively({
@@ -121,7 +121,7 @@ export function updatable<T>(params: {
     } else {
       (sClass as Update<T>).update = (updateParams: Partial<T>) => {
         for (const prop in updateParams) {
-          update(prop, updateParams[prop]);
+          update(prop as keyof T, updateParams[prop] as T[keyof T]);
         }
       };
     }
@@ -139,7 +139,7 @@ export function updatable<T>(params: {
 
             // Change event
             PgCommon.createAndDispatchCustomEvent(
-              sClass._getChangeEventName(prop),
+              sClass._getChangeEventName(prop as string),
               value
             );
 
@@ -292,8 +292,6 @@ type MapNestedProperties<T extends [string[], unknown]> = {
 
 /** Join the given string array capitalized */
 type JoinCapitalized<T extends string[]> = T extends [
-  // infer Head extends string,
-  // ...infer Tail extends string[]
   infer Head,
   ...infer Tail
 ]
@@ -307,8 +305,8 @@ type JoinCapitalized<T extends string[]> = T extends [
 /** Map the property values to a union of tuples */
 type PropertiesToUnionOfTuples<T, Acc extends string[] = []> = {
   [K in keyof T]: T[K] extends object
-    ? [[...Acc, K], T[K]] | PropertiesToUnionOfTuples<T[K], [...Acc, K]>
-    : [[...Acc, K], T[K]];
+    ? [[...Acc, K & string], T[K]] | PropertiesToUnionOfTuples<T[K], [...Acc, K & string]>
+    : [[...Acc, K & string], T[K]];
 }[keyof T];
 
 /**
