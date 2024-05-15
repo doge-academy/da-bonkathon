@@ -61,21 +61,17 @@ export const Main: FC<TutorialMainComponentProps> = ({
   const [Wrapper, props] = (
     currentLayout === "content-only"
       ? [RegularWrapper, {}]
-      : [SplitWrapper, { sizes: [60, 40] }]
+      : [SplitWrapper, { sizes: [40, 60] }]
   ) as [typeof RegularWrapper, {}];
 
   return (
-    <Wrapper {...props}>
-      {currentLayout === "editor-content" && <EditorWithTabs />}
-
-      <TutorialPage ref={tutorialPageRef}>
+    <Wrapper {...props}><TutorialPage ref={tutorialPageRef}>
         <TutorialContent>
           {typeof currentContent === "string" ? (
             <Markdown>{currentContent}</Markdown>
           ) : (
             currentContent
           )}
-
           <NavigationButtonsOutsideWrapper>
             <NavigationButtonsInsideWrapper>
               {pageNumber !== 1 && (
@@ -91,7 +87,6 @@ export const Main: FC<TutorialMainComponentProps> = ({
                   </NavigationButton>
                 </PreviousWrapper>
               )}
-
               <NextWrapper>
                 <NextText>Next</NextText>
                 {pageNumber === pages.length ? (
@@ -118,18 +113,22 @@ export const Main: FC<TutorialMainComponentProps> = ({
           </NavigationButtonsOutsideWrapper>
         </TutorialContent>
       </TutorialPage>
+      {currentLayout === "editor-content" && <EditorWithTabs />}
     </Wrapper>
   );
 };
 
-const RegularWrapper = styled.div``;
+
+
+const RegularWrapper = styled.div`
+`;
 
 const SplitWrapper = styled(Split)`
   display: flex;
   width: 100%;
   height: -webkit-fill-available;
   max-height: 100%;
-  overflow: auto;
+  
 
   & > div:not(.gutter) {
     min-width: 25%;
@@ -144,7 +143,6 @@ const TutorialPage = styled.div`
   ${({ theme }) => css`
     overflow: auto;
     max-width: 60rem;
-    padding-top: ${theme.components.tabs.tab.default.height};
     background: ${theme.components.main.views.tutorial.default.bg};
   `}
 `;
@@ -152,6 +150,8 @@ const TutorialPage = styled.div`
 const TutorialContent = styled.div`
   ${({ theme }) => css`
     ${PgTheme.convertToCSS(theme.components.main.views.tutorial.tutorialPage)};
+    background: #000;
+    
   `}
 `;
 
@@ -175,6 +175,7 @@ const NavigationButton = styled(Button)`
     margin-top: 0.5rem;
     font-size: ${theme.font.other.size.medium};
     font-weight: bold;
+    
 
     & svg {
       width: 1.25rem;
@@ -185,6 +186,7 @@ const NavigationButton = styled(Button)`
 
 const PreviousWrapper = styled.div`
   width: 100%;
+  
 `;
 
 const PreviousText = styled.div``;
@@ -194,6 +196,7 @@ const NextWrapper = styled.div`
   flex-direction: column;
   align-items: flex-end;
   width: 100%;
+  
 `;
 
 const NextText = styled.div``;

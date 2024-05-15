@@ -185,6 +185,7 @@ const Terminal = () => {
       <Wrapper ref={termRef}>
         <Topbar>
           <TerminalProgress />
+          <p style={{fontSize: '12px', color: '#777777'}}>Terminal</p>
           <ButtonsWrapper>
             <Button
               kind="icon"
@@ -220,6 +221,7 @@ const Wrapper = styled.div`
   ${({ theme }) => css`
     ${PgTheme.getScrollbarCSS({ allChildren: true })};
     ${PgTheme.convertToCSS(theme.components.terminal.default)};
+    
   `}
 `;
 
@@ -254,6 +256,7 @@ const ButtonsWrapper = styled.div`
 const TerminalWrapper = styled.div`
   height: calc(100% - ${PgTerminal.MIN_HEIGHT}px);
   margin-left: 1rem;
+  
 
   & .xterm-viewport {
     background: inherit !important;

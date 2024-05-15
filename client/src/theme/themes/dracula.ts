@@ -1,7 +1,7 @@
 import type { Theme } from "../../utils/pg";
 
 // BG
-const BG_DEFAULT = "#282A36",
+const BG_DEFAULT = "#1b1b1b",
   BG_DARK = "#222222",
   BG_DARKER = "#191A21",
   // FG

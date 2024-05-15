@@ -81,6 +81,7 @@ export const Tutorials = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  overflow: scroll;
   width: 100%;
   height: 100%;
 `;
@@ -98,7 +99,7 @@ const TopSection = styled.div`
   width: 100%;
   padding-top: 10rem;
   padding-bottom: 2rem;
-  background-image: url('/group 30.svg');
+  background-image: url('/background.svg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -121,7 +122,7 @@ const MainSection = styled.div`
 
 const FiltersWrapper = styled.div`
   display: flex;
-  max-width: 1500px;
+  max-width: 1200px;
   flex-wrap: wrap;
   padding-left: 1.5rem;
   border-top-left-radius: ${({ theme }) => theme.default.borderRadius};
@@ -131,7 +132,7 @@ const FiltersWrapper = styled.div`
 
 const TutorialsWrapper = styled.div`
   flex: 1;
-  max-width: 1500px;
+  max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   display: flex;

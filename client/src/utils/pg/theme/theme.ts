@@ -1047,7 +1047,7 @@ export class PgTheme {
     terminal.default.height ??= "100%";
     terminal.default.bg ??= theme.colors.default.bgPrimary;
     terminal.default.color ??= theme.colors.default.textPrimary;
-    terminal.default.borderTop ??= `1px solid ${theme.colors.default.primary};`;
+    terminal.default.borderTop ??= `1px solid #0d0d0d`;
 
     // Xterm
     terminal.xterm ??= {};
