@@ -9,7 +9,6 @@ import { Sad } from "../../../components/Icons";
 import { useFilteredSearch } from "../../../hooks";
 import { GITHUB_URL } from "../../../constants";
 import { PgTutorial } from "../../../utils/pg";
-
 /**
  * Tutorial items sorted by date.
  *
@@ -34,7 +33,7 @@ export const Tutorials = () => {
   return (
     <div className="flex flex-col w-full h-full overflow-scroll text-text-primary">
       <div className="flex flex-col w-full h-full">
-        <div className="flex justify-center w-full pt-48 pb-8">
+        <div className="flex justify-center  w-full pt-48 pb-8">
           <div className="w-[max(10rem,30%)]">
             <SearchBar
               {...searchBarProps}
@@ -44,13 +43,13 @@ export const Tutorials = () => {
             />
           </div>
         </div>
-        {regularItems.length > 0 && (
-          <div className="flex flex-wrap justify-center gap-6 p-6 mx-auto max-w-7xl">
-            {regularItems.slice(0, 2).map((t) => (
-              <PopularTutorialCard key={t.name} {...t} />
-            ))}
-          </div>
-        )}
+{regularItems.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-6 p-6 mx-auto max-w-7xl">
+              {regularItems.slice(0, 2).map((t) => (
+                <PopularTutorialCard key={t.name} {...t} />
+              ))}
+            </div>
+          )}
         <div className="flex flex-col flex-1 mx-auto">
           <div className="flex flex-wrap max-w-6xl p-6 rounded-t-lg">
             {FILTERS.map((f) => (
@@ -58,6 +57,8 @@ export const Tutorials = () => {
             ))}
           </div>
           {!regularItems.length && <NoMatch />}
+
+          
 
           {regularItems.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6 mx-auto max-w-7xl rounded-b-lg">
@@ -69,10 +70,7 @@ export const Tutorials = () => {
         </div>
 
         <div className="flex justify-center items-center w-full min-h-[5rem] max-h-[5rem] mt-8">
-          <Link
-            href={`${GITHUB_URL}/tree/master/client/src/tutorials`}
-            className="text-cyan hover:underline"
-          >
+          <Link href={`${GITHUB_URL}/tree/master/client/src/tutorials`} className="text-cyan hover:underline">
             Contribute
           </Link>
         </div>
@@ -83,10 +81,7 @@ export const Tutorials = () => {
 
 const NoMatch = () => (
   <div className="flex justify-center items-center flex-1">
-    <Text
-      className="w-[21rem] h-[5rem] text-sm text-text-secondary"
-      icon={<Sad />}
-    >
+    <Text className="w-[21rem] h-[5rem] text-sm text-text-secondary" icon={<Sad />}>
       No match found
     </Text>
   </div>

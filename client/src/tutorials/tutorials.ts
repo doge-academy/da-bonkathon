@@ -3,6 +3,20 @@ import { createTutorials } from "./create";
 /** All visible tutorials at `/tutorials`(in order) */
 export const TUTORIALS = createTutorials(
   {
+    name: "Bonk Me",
+    description: "Build transactions in a web UI. BONK EVERYONE",
+    authors: [
+      {
+        name: "pixeltom.",
+        link: "https://twitter.com/_pixeltom",
+      },
+    ],
+    level: "Beginner",
+    framework: "Native",
+    languages: ["Rust", "TypeScript"],
+  },
+  
+  {
     name: "Hello Solana",
     description: "Hello world program with Native Solana/Rust.",
     authors: [

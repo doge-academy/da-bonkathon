@@ -13,7 +13,7 @@ const TutorialCard: FC<TutorialData> = ({ name, level, framework }) => {
 
   return (
     <div
-      className="relative transform transition-transform ease-in-out duration-300 hover:translate-y-[-0.75rem] cursor-pointer col-span-1 w-72 h-60"
+      className="relative transform transition-transform ease-in-out duration-300 hover:translate-y-[-0.75rem] cursor-pointer col-span-1 w-72 h-48"
       onClick={() => PgTutorial.open(name)}
     >
       <div

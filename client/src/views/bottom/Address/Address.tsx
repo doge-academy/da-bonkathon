@@ -15,7 +15,7 @@ export const Address = () => {
       <Tooltip element="Your address">
         <Link
           href={blockExplorer.getAddressUrl(walletPkStr)}
-          className="text-current flex"
+          className="text-current flex items-center justify-center"
         >
           {walletPkStr}
         </Link>
