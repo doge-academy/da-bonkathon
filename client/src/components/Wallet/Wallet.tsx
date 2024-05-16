@@ -1,20 +1,17 @@
 import { FC, useCallback, useEffect, useRef, useState } from "react";
-import styled, { css } from "styled-components";
 import { Rnd } from "react-rnd";
 
 import Balance from "./Balance";
 import Send from "./Send";
 import Settings from "./Settings";
 import Transactions from "./Transactions";
-import Button from "../Button";
-import FadeIn from "../FadeIn";
 import Img from "../Img";
 import Input from "../Input";
 import Menu, { MenuItemProps } from "../Menu";
 import Tooltip from "../Tooltip";
 import { Close, ShortArrow } from "../Icons";
-import { ClassName, Id } from "../../constants";
-import { Fn, PgCommon, PgTheme, PgWallet } from "../../utils/pg";
+import { Id } from "../../constants";
+import { Fn, PgCommon, PgWallet } from "../../utils/pg";
 import {
   useAutoAirdrop,
   useDarken,
@@ -28,24 +25,22 @@ import {
   useWallet,
 } from "../../hooks";
 
-const Wallet = () => {
+const Wallet: FC = () => {
   useRenderOnChange(PgWallet.onDidChangeShow);
-
-  const { wallet } = useWallet();
 
   useStandardAccountChange();
   useSyncBalance();
   useAutoAirdrop();
 
-  if (!PgWallet.show || !wallet) return null;
-
   const tabHeight = document
     .getElementById(Id.TABS)
     ?.getBoundingClientRect().height;
 
+  if (!PgWallet.show) return null;
+
   return (
     <>
-      <WalletBound id={Id.WALLET_BOUND} />
+      <div id={Id.WALLET_BOUND} className="absolute z-[-1] m-2.5"></div>
       <Rnd
         default={{
           x: window.innerWidth - (WALLET_WIDTH + 12),
@@ -58,43 +53,18 @@ const Wallet = () => {
         enableResizing={false}
         bounds={"#" + Id.WALLET_BOUND}
         enableUserSelectHack={false}
+        style={{ position: "fixed", top: "1rem", right: "1rem" }}
       >
-        <WalletWrapper>
+        <div className="p-4 shadow-lg rounded-lg bg-[#3b3b3b] z-[1000]">
           <WalletTop />
           <WalletMain />
-        </WalletWrapper>
+        </div>
       </Rnd>
     </>
   );
 };
 
 const WALLET_WIDTH = 320;
-
-const WalletBound = styled.div`
-  ${({ theme }) => css`
-    position: absolute;
-    margin: ${theme.components.tabs.tab.default.height} 0.75rem
-      ${theme.components.bottom.default.height}
-      ${theme.components.sidebar.left.default.width};
-    width: calc(
-      100% - (0.75rem + ${theme.components.sidebar.left.default.width})
-    );
-    height: calc(
-      100% -
-        (
-          ${theme.components.tabs.tab.default.height} +
-            ${theme.components.bottom.default.height}
-        )
-    );
-    z-index: -1;
-  `}
-`;
-
-const WalletWrapper = styled(FadeIn)`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.wallet.default)};
-  `}
-`;
 
 const WalletTop = () => {
   const [rename, setRename] = useState(false);
@@ -108,19 +78,13 @@ const WalletTop = () => {
   }, []);
 
   return (
-    <WalletTopWrapper>
+    <div className="relative h-8 flex justify-center items-center p-2">
       <Settings showRename={showRename} />
       {rename ? <WalletRename hideRename={hideRename} /> : <WalletName />}
       <WalletClose />
-    </WalletTopWrapper>
+    </div>
   );
 };
-
-const WalletTopWrapper = styled.div`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.wallet.top.default)};
-  `}
-`;
 
 const WalletName = () => {
   const { wallet, walletPkStr } = useWallet();
@@ -137,7 +101,6 @@ const WalletName = () => {
     []
   );
 
-  // Show al lof the Playground Wallet accounts
   const pgAccounts: MenuItemProps[] = PgWallet.accounts.map((acc, i) => ({
     name: getAccountDisplayName(
       acc.name,
@@ -147,7 +110,6 @@ const WalletName = () => {
     hoverColor: "textPrimary",
   }));
 
-  // Show all of the connected Wallet Standard accounts
   const standardAccounts: MenuItemProps[] =
     PgWallet.getConnectedStandardWallets().map((wallet) => ({
       name: getAccountDisplayName(wallet.name, wallet.publicKey!.toBase58()),
@@ -167,56 +129,35 @@ const WalletName = () => {
       onHide={lighten}
     >
       <Tooltip element="Accounts">
-        <WalletTitleWrapper>
+        <div className="flex justify-center items-center cursor-pointer hover:text-primary">
           {!wallet.isPg && (
-            <WalletTitleIcon src={wallet.icon} alt={wallet.name} />
+            <Img
+              className="w-4 h-4 mr-1"
+              src={wallet.icon}
+              alt={wallet.name}
+            />
           )}
-          <WalletTitleText>
+          <span className="flex items-center p-1 text-secondary font-bold text-sm transition-all">
             {getAccountDisplayName(wallet.name, walletPkStr!)}
-          </WalletTitleText>
+          </span>
           <ShortArrow rotate="90deg" />
-        </WalletTitleWrapper>
+        </div>
       </Tooltip>
     </Menu.Dropdown>
   );
 };
 
-const WalletTitleWrapper = styled.div`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.wallet.top.title.default)};
-  `}
-`;
-
-const WalletTitleIcon = styled(Img)`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.wallet.top.title.icon)};
-  `}
-`;
-
-const WalletTitleText = styled.span`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.wallet.top.title.text)};
-  `}
-`;
-
-interface WalletRenameProps {
-  hideRename: Fn;
-}
-
-const WalletRename: FC<WalletRenameProps> = ({ hideRename }) => {
+const WalletRename: FC<{ hideRename: Fn }> = ({ hideRename }) => {
   const [name, setName] = useState(PgWallet.current!.name);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Focus input on mount
   useEffect(() => {
     inputRef.current?.select();
   }, []);
 
-  // Close on outside clicks
   useOnClickOutside(inputRef, hideRename);
 
-  // Keybinds
   useKeybind([
     {
       keybind: "Enter",
@@ -245,44 +186,20 @@ const WalletRename: FC<WalletRenameProps> = ({ hideRename }) => {
 };
 
 const WalletClose = () => (
-  <CloseButton onClick={() => (PgWallet.show = false)} kind="icon">
+  <button
+    onClick={() => (PgWallet.show = false)}
+    className="absolute right-4"
+  >
     <Close />
-  </CloseButton>
+  </button>
 );
 
-const CloseButton = styled(Button)`
-  position: absolute;
-  right: 1rem;
-`;
-
 const WalletMain = () => (
-  <MainWrapper id={Id.WALLET_MAIN}>
+  <div id={Id.WALLET_MAIN} className="relative p-4">
     <Balance />
     <Send />
     <Transactions />
-  </MainWrapper>
+  </div>
 );
-
-const MainWrapper = styled.div`
-  ${({ theme }) => css`
-    &::after {
-      content: "";
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      inset: 0;
-      background: #00000000;
-      pointer-events: none;
-      transition: all ${theme.default.transition.duration.short}
-        ${theme.default.transition.type};
-    }
-
-    &.${ClassName.DARKEN}::after {
-      ${PgTheme.convertToCSS(theme.components.wallet.main.backdrop)};
-    }
-
-    ${PgTheme.convertToCSS(theme.components.wallet.main.default)};
-  `}
-`;
 
 export default Wallet;

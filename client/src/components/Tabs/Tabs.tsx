@@ -1,18 +1,15 @@
 import { SetStateAction, useCallback } from "react";
 import styled, { css } from "styled-components";
-
 import Tab from "./Tab";
-import Button from "../Button";
 import Dnd from "../Dnd";
-import Img from "../Img";
 import { Id } from "../../constants";
-import { PgExplorer, PgTheme, PgWallet } from "../../utils/pg";
+import { PgExplorer, PgTheme } from "../../utils/pg";
 import {
   useExplorer,
   useKeybind,
   useRenderOnChange,
-  useWallet,
 } from "../../hooks";
+import Wallet from "../Wallet";
 
 export const Tabs = () => {
   // Without this, tabs flicker after reorder
@@ -52,7 +49,6 @@ export const Tabs = () => {
           strategy="horizontal"
         />
       </TabsWrapper>
-
       <Wallet />
     </Wrapper>
   );
@@ -73,45 +69,5 @@ const TabsWrapper = styled.div`
   ${PgTheme.getScrollbarCSS({ height: "0.25rem !important" })};
 `;
 
-const Wallet = () => {
-  const { wallet } = useWallet();
 
-  if (!wallet) return null;
-
-  return (
-    <WalletWrapper>
-      <Button
-        onClick={() => (PgWallet.show = !PgWallet.show)}
-        kind="icon"
-        fontWeight="bold"
-      >
-        <Img src="/icons/sidebar/wallet.png" alt="Wallet" />
-        Wallet
-      </Button>
-    </WalletWrapper>
-  );
-};
-
-const WalletWrapper = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    align-items: center;
-
-    & > button {
-      background: ${theme.colors.default.bgPrimary};
-      border-top-left-radius: ${theme.default.borderRadius};
-      border-bottom-left-radius: ${theme.default.borderRadius};
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-
-      & img {
-        filter: invert(0.5);
-        margin-right: 0.375rem;
-      }
-
-      &:hover img {
-        filter: invert(${theme.isDark ? 1 : 0});
-      }
-    }
-  `}
-`;
+export default Tabs;
