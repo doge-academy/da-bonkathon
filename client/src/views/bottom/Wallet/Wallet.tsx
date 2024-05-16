@@ -1,10 +1,8 @@
 import { useCallback } from "react";
-import styled, { css } from "styled-components";
-
 import Button from "../../../components/Button";
 import Tooltip from "../../../components/Tooltip";
 import { useWallet } from "../../../hooks";
-import { PgCommand, PgTheme } from "../../../utils/pg";
+import { PgCommand } from "../../../utils/pg";
 
 export const Wallet = () => {
   const { wallet, walletPkStr } = useWallet();
@@ -15,39 +13,28 @@ export const Wallet = () => {
 
   return (
     <Tooltip element="Toggle Playground Wallet">
-      <ConnectButton
-        onClick={connect}
+      <Button
         kind="transparent"
-        leftIcon={<WalletStatus isConnected={!!walletPkStr} />}
+        onClick={connect}
+        className="h-full px-3 hover:bg-opacity-30 flex items-center"
       >
-        {wallet
-          ? wallet.isPg
-            ? "Connected to Playground Wallet"
-            : `Connected to ${wallet.name}`
-          : "Not connected"}
-      </ConnectButton>
+        <WalletStatus isConnected={!!walletPkStr} />
+        <span className="ml-2">
+          {wallet
+            ? wallet.isPg
+              ? "Connected to Playground Wallet"
+              : `Connected to ${wallet.name}`
+            : "Not connected"}
+        </span>
+      </Button>
     </Tooltip>
   );
 };
 
-const ConnectButton = styled(Button)`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.bottom.connect)};
-  `}
-`;
-
-const WalletStatus = styled.span<{ isConnected: boolean }>`
-  ${({ isConnected, theme }) => css`
-    &::before {
-      content: "";
-      display: block;
-      width: 0.75rem;
-      height: 0.75rem;
-      border-radius: 50%;
-      margin-right: 0.25rem;
-      background: ${isConnected
-        ? theme.colors.state.success.color
-        : theme.colors.state.error.color};
-    }
-  `}
-`;
+const WalletStatus = ({ isConnected }: { isConnected: boolean }) => (
+  <span
+    className={`inline-block w-3 h-3 rounded-full ${
+      isConnected ? 'bg-green-500' : 'bg-red-500'
+    }`}
+  />
+);

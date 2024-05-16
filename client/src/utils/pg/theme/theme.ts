@@ -1291,7 +1291,7 @@ export class PgTheme {
     // Left default
     sidebar.left.default ??= {};
     sidebar.left.default.width ??= "4.5rem";
-    sidebar.left.default.padding ??= "1rem";
+    
     sidebar.left.default.bg ??= "#1B1B1B";
     sidebar.left.default.borderRight ??= `1px solid ${theme.colors.default.border}`;
 

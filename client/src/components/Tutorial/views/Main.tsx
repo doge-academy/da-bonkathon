@@ -1,12 +1,11 @@
 import { FC, useEffect, useRef } from "react";
-import styled, { css } from "styled-components";
 import Split from "react-split";
 
 import Button from "../../Button";
 import Markdown from "../../Markdown";
 import { EditorWithTabs } from "../../../views/main/EditorWithTabs";
 import { PointedArrow } from "../../Icons";
-import { PgTheme, PgTutorial } from "../../../utils/pg";
+import { PgTutorial } from "../../../utils/pg";
 import type { TutorialMainComponentProps } from "../types";
 
 export const Main: FC<TutorialMainComponentProps> = ({
@@ -56,147 +55,70 @@ export const Main: FC<TutorialMainComponentProps> = ({
   const currentContent = currentPage.content;
   const currentLayout = currentPage.layout ?? layout;
 
-  // TODO: Add a custom `Split` component because `react-split` doesn't properly
-  // handle size and `children.length` changes
-  const [Wrapper, props] = (
-    currentLayout === "content-only"
-      ? [RegularWrapper, {}]
-      : [SplitWrapper, { sizes: [40, 60] }]
-  ) as [typeof RegularWrapper, {}];
+  const Wrapper = currentLayout === "content-only" ? "div" : Split;
 
   return (
-    <Wrapper {...props}><TutorialPage ref={tutorialPageRef}>
-        <TutorialContent>
-          {typeof currentContent === "string" ? (
-            <Markdown>{currentContent}</Markdown>
-          ) : (
-            currentContent
-          )}
-          <NavigationButtonsOutsideWrapper>
-            <NavigationButtonsInsideWrapper>
+    <Wrapper
+      {...(currentLayout !== "content-only" ? { sizes: [40, 60] } : {})}
+      className="flex w-full h-full pt-12 overflow-hidden"
+    >
+      <div
+        ref={tutorialPageRef}
+        className="overflow-auto h-full"
+      >
+        <div className="bg-black">
+          <div className="p-6">
+            {typeof currentContent === "string" ? (
+              <Markdown>{currentContent}</Markdown>
+            ) : (
+              currentContent
+            )}
+          </div>
+          <div className="py-12">
+            <div className="flex w-full pt-6 border-t border-gray-700 text-sm font-bold">
               {pageNumber !== 1 && (
-                <PreviousWrapper>
-                  <PreviousText>Previous</PreviousText>
-                  <NavigationButton
+                <div className="w-full">
+                  <div>Previous</div>
+                  <Button
                     onClick={previousPage}
                     kind="no-border"
+                    className="mt-2 text-base font-bold"
                     leftIcon={<PointedArrow rotate="180deg" />}
                   >
                     {pages[pageNumber - 2].title ??
                       `${pageNumber - 1}/${pages.length}`}
-                  </NavigationButton>
-                </PreviousWrapper>
+                  </Button>
+                </div>
               )}
-              <NextWrapper>
-                <NextText>Next</NextText>
+              <div className="flex flex-col items-end w-full">
+                <div>Next</div>
                 {pageNumber === pages.length ? (
-                  <NavigationButton
+                  <Button
                     onClick={finishTutorial}
                     kind="no-border"
                     color="success"
+                    className="mt-2 text-base font-bold"
                     rightIcon={<span>✔</span>}
                   >
                     Finish
-                  </NavigationButton>
+                  </Button>
                 ) : (
-                  <NavigationButton
+                  <Button
                     onClick={nextPage}
                     kind="no-border"
+                    className="mt-2 text-base font-bold"
                     rightIcon={<PointedArrow />}
                   >
                     {pages[pageNumber].title ??
                       `${pageNumber + 1}/${pages.length}`}
-                  </NavigationButton>
+                  </Button>
                 )}
-              </NextWrapper>
-            </NavigationButtonsInsideWrapper>
-          </NavigationButtonsOutsideWrapper>
-        </TutorialContent>
-      </TutorialPage>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {currentLayout === "editor-content" && <EditorWithTabs />}
     </Wrapper>
   );
 };
-
-
-
-const RegularWrapper = styled.div`
-`;
-
-const SplitWrapper = styled(Split)`
-  display: flex;
-  width: 100%;
-  height: -webkit-fill-available;
-  max-height: 100%;
-  
-
-  & > div:not(.gutter) {
-    min-width: 25%;
-  }
-
-  & > .gutter {
-    cursor: col-resize;
-  }
-`;
-
-const TutorialPage = styled.div`
-  ${({ theme }) => css`
-    overflow: auto;
-    max-width: 60rem;
-    background: ${theme.components.main.views.tutorial.default.bg};
-  `}
-`;
-
-const TutorialContent = styled.div`
-  ${({ theme }) => css`
-    ${PgTheme.convertToCSS(theme.components.main.views.tutorial.tutorialPage)};
-    background: #000;
-    
-  `}
-`;
-
-const NavigationButtonsOutsideWrapper = styled.div`
-  padding: 3rem 0;
-`;
-
-const NavigationButtonsInsideWrapper = styled.div`
-  ${({ theme }) => css`
-    display: flex;
-    width: 100%;
-    padding-top: 1.5rem;
-    border-top: 1px solid ${theme.colors.default.border};
-    font-size: ${theme.font.other.size.small};
-    font-weight: bold;
-  `}
-`;
-
-const NavigationButton = styled(Button)`
-  ${({ theme }) => css`
-    margin-top: 0.5rem;
-    font-size: ${theme.font.other.size.medium};
-    font-weight: bold;
-    
-
-    & svg {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-  `}
-`;
-
-const PreviousWrapper = styled.div`
-  width: 100%;
-  
-`;
-
-const PreviousText = styled.div``;
-
-const NextWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  width: 100%;
-  
-`;
-
-const NextText = styled.div``;

@@ -1,6 +1,4 @@
 import { FC } from "react";
-import styled, { css } from "styled-components";
-
 import Link from "../Link";
 import Tag from "../Tag";
 import { Arrayable, TutorialDetailKey } from "../../utils/pg";
@@ -14,14 +12,19 @@ const TutorialDetails: FC<TutorialDetailsProps> = ({ details }) => {
   const { ref } = useDifferentBackground();
 
   return (
-    <TutorialDetailsWrapper ref={ref}>
+    <div
+      ref={ref}
+      className="p-4 flex flex-wrap justify-between gap-x-8 gap-y-4 rounded-md"
+    >
       {details.map(({ kind, data }) => {
         return (
           data && (
-            <TutorialDetailSection key={kind}>
-              <TutorialDetailName>{kind}</TutorialDetailName>
+            <div key={kind} className="flex flex-col gap-2">
+              <span className="font-bold uppercase tracking-wide text-sm">
+                {kind}
+              </span>
 
-              <TutorialDetailWrapper>
+              <div className="flex flex-wrap gap-4">
                 {Array.isArray(data) ? (
                   data.map((data) => (
                     <ClickableTutorialDetail
@@ -33,47 +36,14 @@ const TutorialDetails: FC<TutorialDetailsProps> = ({ details }) => {
                 ) : (
                   <ClickableTutorialDetail kind={kind} data={data} />
                 )}
-              </TutorialDetailWrapper>
-            </TutorialDetailSection>
+              </div>
+            </div>
           )
         );
       })}
-    </TutorialDetailsWrapper>
+    </div>
   );
 };
-
-const TutorialDetailsWrapper = styled.div`
-  ${({ theme }) => css`
-    padding: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    column-gap: 2rem;
-    row-gap: 1rem;
-    border-radius: ${theme.default.borderRadius};
-  `}
-`;
-
-const TutorialDetailSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-const TutorialDetailName = styled.span`
-  ${({ theme }) => css`
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    font-size: ${theme.font.other.size.small};
-  `}
-`;
-
-const TutorialDetailWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-`;
 
 interface ClickableTutorialDetailProps {
   kind: TutorialDetailKey;

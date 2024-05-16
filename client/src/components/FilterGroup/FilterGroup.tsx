@@ -50,7 +50,7 @@ const FiltersContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 100px;
+  
 `;
 
 const FilterButton = styled.button<{ selected: boolean }>`
