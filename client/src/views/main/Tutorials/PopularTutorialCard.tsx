@@ -2,13 +2,18 @@ import { FC, useMemo } from "react";
 import Tag from "../../../components/Tag";
 import { PgTutorial, TutorialData } from "../../../utils/pg";
 
-const colors = ["#3C54D2", "#6D30B7", "#DBDBDB"];
+const colors = ["#161616", "#525252"];
 
 const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const PopularTutorialCard: FC<TutorialData> = ({ name, level, framework, description }) => {
+const PopularTutorialCard: FC<TutorialData> = ({
+  name,
+  level,
+  framework,
+  description,
+}) => {
   const backgroundColor = useMemo(getRandomColor, []); // memoize to keep the same color during re-renders
 
   return (
@@ -29,13 +34,12 @@ const PopularTutorialCard: FC<TutorialData> = ({ name, level, framework, descrip
           <div className="absolute top-3 right-3">
             {framework && <Tag kind="framework" value={framework} />}
           </div>
-          
-          <div className="mt-8">
-            <h3 className="font-bold text-xl text-text-primary">{name}</h3>
-            <p className="text-sm text-text-secondary mt-2">{description}</p>
-          </div>
-          
-          <div className="mt-4">
+
+          <div className="mt-auto">
+            <div className="mb-4">
+              <h3 className="font-bold text-xl text-text-primary">{name}</h3>
+              <p className="text-sm text-text-secondary mt-2">{description}</p>
+            </div>
             <button className="bg-gray-800 text-white border-none px-4 py-2 rounded hover:bg-gray-700">
               Start Course
             </button>

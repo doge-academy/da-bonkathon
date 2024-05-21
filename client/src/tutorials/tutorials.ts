@@ -45,20 +45,6 @@ export const TUTORIALS = createTutorials(
   },
 
   {
-    name: "Hello Seahorse",
-    description: "Hello world program with Seahorse framework in Python.",
-    authors: [
-      {
-        name: "acheron",
-        link: "https://twitter.com/acheroncrypto",
-      },
-    ],
-    level: "Beginner",
-    framework: "Seahorse",
-    languages: ["Python", "TypeScript"],
-  },
-
-  {
     name: "Counter PDA Tutorial",
     description:
       "Create a simple counter that will store the number of times is called.",
@@ -220,50 +206,5 @@ export const TUTORIALS = createTutorials(
     level: "Intermediate",
     framework: "Anchor",
     languages: ["Rust", "TypeScript"],
-  },
-
-  {
-    name: "Tictactoe Seahorse",
-    description:
-      "Create your own 2 player on-chain classic game of tic-tac-toe.",
-    authors: [
-      {
-        name: "lostin",
-        link: "https://twitter.com/__lostin__",
-      },
-    ],
-    level: "Beginner",
-    framework: "Seahorse",
-    languages: ["Python", "TypeScript"],
-    categories: ["Gaming"],
-  },
-
-  {
-    name: "Todo App Seahorse",
-    description: "Build a todo app to keep track of tasks.",
-    authors: [
-      {
-        name: "lostin",
-        link: "https://twitter.com/__lostin__",
-      },
-    ],
-    level: "Beginner",
-    framework: "Seahorse",
-    languages: ["Python", "TypeScript"],
-  },
-
-  {
-    name: "Faucet Seahorse",
-    description: "Build a token faucet with a price oracle.",
-    authors: [
-      {
-        name: "lostin",
-        link: "https://twitter.com/__lostin__",
-      },
-    ],
-    level: "Intermediate",
-    framework: "Seahorse",
-    languages: ["Python", "TypeScript"],
-    categories: ["SPL", "Token"],
   }
 );
